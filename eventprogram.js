@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Eventprogram
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  try to take over the world!
 // @author       You
 // @updateURL    https://github.com/TriXxieDK/Eventprogram/blob/master/eventprogram.js
@@ -80,11 +80,21 @@ var $ = window.jQuery;
             //Hvis tidspunktet ikke findes i skemaet, så gør ikke mere
             if (!el) return false;
 
-            //Farv alle tidligere events grå
-            el.prevAll().find('td').css('color', 'lightgray');
-
             //Scroll til det rigtige sted på siden, og lav stregen henover
             var elOffset = el.offset().top + $('#sheets-viewport').scrollTop();
+
+            $("<div>", {
+            	id: 'overlay',
+            }).css({
+            	position: 'absolute',
+            	top: '0px',
+            	left: '0px',
+            	height: elOffset+'px',
+            	width: '100%',
+            	backgroundColor: 'black',
+            	opacity: .2
+            }).appendTo("#sheets-viewport > div > div");
+
             var elHeight = el.height();
             var windowHeight = $(window).height();
             var offset;
@@ -98,7 +108,7 @@ var $ = window.jQuery;
             $("<div>", {
                 id: 'divline',
                 style: 'position: absolute; top: 10px; left: 0px; width: 100%; height: 5px; background-color: black; z-index: 10000'
-            }).appendTo("#sheets-viewport > div > div").css('top', (elOffset - 5) + 'px');;
+            }).appendTo("#sheets-viewport > div > div").css('top', (elOffset - 5) + 'px');
 
             $('#sheets-viewport').animate({ scrollTop: offset }, 700);
         });
