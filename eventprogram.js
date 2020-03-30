@@ -4,6 +4,8 @@
 // @version      0.1
 // @description  try to take over the world!
 // @author       You
+// @updateURL    https://github.com/TriXxieDK/Eventprogram/blob/master/eventprogram.js
+// @downloadURL  https://github.com/TriXxieDK/Eventprogram/blob/master/eventprogram.js
 // @match        https://docs.google.com/spreadsheets/u/0/d/e/2PACX-1vS2zzGTsnJe06I6I7YLMlkasqFEvetVkMXJxs7lFgT2iwnT9YG0wxwKbUNsPK2orJe1DL4zspCL1XQR/pubhtml/sheet?headers=false&gid=340956028
 // @grant        none
 // @require      http://code.jquery.com/jquery-3.4.1.min.js
