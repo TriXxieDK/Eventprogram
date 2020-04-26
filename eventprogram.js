@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Eventprogram
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.1
 // @description  try to take over the world!
 // @author       You
 // @updateURL    https://github.com/TriXxieDK/Eventprogram/blob/master/eventprogram.js
@@ -15,13 +15,14 @@ var $ = window.jQuery;
 (function() {
     'use strict';
     //Start af event (første dag)
-    var startdate = new Date('2020-3-29');
+    var startdate = new Date('2020-11-13');
 
     //Regex til at teste for tidspunkt
     var regex = new RegExp("[0-9][0-9]?\.[0-9][0-9]");
     var currentHour;
     var currentMinutes;
     var currentDay;
+    var lastMessages;
 
     function isNow(timestr, day) {
         var splitted = timestr.split('.');
@@ -36,7 +37,7 @@ var $ = window.jQuery;
 
     var reloadfunc = function() {
         var now = new Date();
-        //now = new Date('2020-3-30T00:40:00'); //Bruges til at simulere et tidspunkt for test
+        now = new Date(Date.parse('14 Nov 2020 13:45:00 GMT+1')); //Bruges til at simulere et tidspunkt for test
 
         //Nuværende dag nummer i eventet og time / minut afrundet til halve timer
         currentDay = Math.round((now - startdate) / (1000 * 60 * 60 * 24));
@@ -44,6 +45,7 @@ var $ = window.jQuery;
         currentMinutes = now.getMinutes();
         if (currentMinutes < 30) currentMinutes = 0;
         if (currentMinutes >= 30) currentMinutes = 30;
+        var percentpassed = ((now.getMinutes() - currentMinutes) / 30 * 100);
 
         //Genindlæs dokument indhold fra docs
         $('#sheets-viewport').load(document.URL + ' #sheets-viewport > div', function() {
@@ -82,6 +84,8 @@ var $ = window.jQuery;
 
             //Scroll til det rigtige sted på siden, og lav stregen henover
             var elOffset = el.offset().top + $('#sheets-viewport').scrollTop();
+            var elHeight = el.height();
+            elOffset = elOffset + Math.floor(percentpassed / 100 * elHeight);
 
             $("<div>", {
             	id: 'overlay',
@@ -91,29 +95,46 @@ var $ = window.jQuery;
             	left: '0px',
             	height: elOffset+'px',
             	width: '100%',
-            	backgroundColor: 'black',
-            	opacity: .2
+            	backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                'border-bottom': '5px solid rgba(0, 0, 0, 0.4)'
             }).appendTo("#sheets-viewport > div > div");
 
-            var elHeight = el.height();
             var windowHeight = $(window).height();
-            var offset;
+            var scrollOffset = Math.round(elOffset - ((windowHeight / 3) - (elHeight / 2)));
 
-            if (elHeight < windowHeight) {
-                offset = Math.round(elOffset - ((windowHeight / 3) - (elHeight / 2)));
-            } else {
-                offset = elOffset;
+            $('#sheets-viewport').animate({ scrollTop: scrollOffset }, 700);
+
+            var messages = [
+                $('#sheets-viewport > div > div > table.waffle tbody tr:nth-child(101) td:nth-child(3) div').html(),
+                $('#sheets-viewport > div > div > table.waffle tbody tr:nth-child(102) td:nth-child(3) div').html(),
+                $('#sheets-viewport > div > div > table.waffle tbody tr:nth-child(103) td:nth-child(3) div').html(),
+                $('#sheets-viewport > div > div > table.waffle tbody tr:nth-child(104) td:nth-child(3) div').html(),
+                $('#sheets-viewport > div > div > table.waffle tbody tr:nth-child(105) td:nth-child(3) div').html(),
+            ].filter(Boolean).join('&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;');
+
+            console.log(messages);
+            if (messages != lastMessages) {
+                $('#newsticker').html(messages);
             }
-
-            $("<div>", {
-                id: 'divline',
-                style: 'position: absolute; top: 10px; left: 0px; width: 100%; height: 5px; background-color: black; z-index: 10000'
-            }).appendTo("#sheets-viewport > div > div").css('top', (elOffset - 5) + 'px');
-
-            $('#sheets-viewport').animate({ scrollTop: offset }, 700);
+            $('#newsticker').css('display', messages == "" ? 'none' : 'block');
+            lastMessages = messages;
         });
     };
 
     setInterval(reloadfunc, 60000);
     reloadfunc();
+    $('<marquee>', {
+        id: 'newsticker',
+        scrollamount: '20',
+        scrolldelay: '60',
+    }).css({
+        display: 'none',
+        position: 'fixed',
+        bottom: '0px',
+        height: '100px',
+        width: '100%',
+        'background-color': 'orange',
+        color: 'white',
+        'font-size': '80px',
+    }).appendTo('body');
 })();
