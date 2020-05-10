@@ -36,6 +36,7 @@ var $ = window.jQuery;
     }
 
     var reloadfunc = function() {
+        console.log('reloading');
         var now = new Date();
         now = new Date(Date.parse('14 Nov 2020 13:45:00 GMT+1')); //Bruges til at simulere et tidspunkt for test
 
@@ -110,9 +111,8 @@ var $ = window.jQuery;
                 $('#sheets-viewport > div > div > table.waffle tbody tr:nth-child(103) td:nth-child(3) div').html(),
                 $('#sheets-viewport > div > div > table.waffle tbody tr:nth-child(104) td:nth-child(3) div').html(),
                 $('#sheets-viewport > div > div > table.waffle tbody tr:nth-child(105) td:nth-child(3) div').html(),
-            ].filter(Boolean).join('&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;');
+            ].filter(Boolean).join('&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;')+'&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;';
 
-            console.log(messages);
             if (messages != lastMessages) {
                 $('#newsticker').html(messages);
             }
@@ -123,10 +123,9 @@ var $ = window.jQuery;
 
     setInterval(reloadfunc, 60000);
     reloadfunc();
-    $('<marquee>', {
+    $('<div>', {
         id: 'newsticker',
-        scrollamount: '20',
-        scrolldelay: '60',
+        class: 'marquee',
     }).css({
         display: 'none',
         position: 'fixed',
@@ -137,4 +136,6 @@ var $ = window.jQuery;
         color: 'white',
         'font-size': '80px',
     }).appendTo('body');
+
+    $.ajax({type: "GET", url: "https://cdnjs.cloudflare.com/ajax/libs/jQuery.Marquee/1.5.0/jquery.marquee.min.js", dataType: "script", complete: function () { $('.marquee').marquee({duplicated: true}); }});
 })();
