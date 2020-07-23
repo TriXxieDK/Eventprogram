@@ -7,6 +7,7 @@
 // @updateURL    https://github.com/TriXxieDK/Eventprogram/blob/master/eventprogram.js
 // @downloadURL  https://github.com/TriXxieDK/Eventprogram/blob/master/eventprogram.js
 // @match        https://docs.google.com/spreadsheets/u/0/d/e/2PACX-1vS2zzGTsnJe06I6I7YLMlkasqFEvetVkMXJxs7lFgT2iwnT9YG0wxwKbUNsPK2orJe1DL4zspCL1XQR/pubhtml/sheet?headers=false&gid=340956028
+// @match        https://docs.google.com/spreadsheets/d/e/2PACX-1vQii6jcYTqQyVLSBZaiADpIxrQzULMxeTK-H_cZoT-XexcObPFBuFpL2QPOJWtAlNt5NJhJyOaPPJEt/pubhtml?headers=false&gid=340956028
 // @grant        none
 // @require      http://code.jquery.com/jquery-3.4.1.min.js
 // ==/UserScript==
@@ -25,7 +26,8 @@ var $ = window.jQuery;
     var lastMessages;
 
     function isNow(timestr, day) {
-        var splitted = timestr.split('.');
+        if (timestr.includes(' - ')) timestr = timestr.split(' - ')[0];
+        var splitted = timestr.split(/[\.:]/);
         var targetHour = parseInt(splitted[0]);
         var targetMinutes = parseInt(splitted[1]);
         //Tag højde for tidspunkter efter midnat
@@ -137,5 +139,5 @@ var $ = window.jQuery;
         'font-size': '80px',
     }).appendTo('body');
 
-    $.ajax({type: "GET", url: "https://cdnjs.cloudflare.com/ajax/libs/jQuery.Marquee/1.5.0/jquery.marquee.min.js", dataType: "script", complete: function () { $('.marquee').marquee({duplicated: true}); }});
+    $.ajax({type: "GET", url: "https://cdnjs.cloudflare.com/ajax/libs/jQuery.Marquee/1.5.0/jquery.marquee.min.js", dataType: "script", complete: function () { $('.marquee').marquee({duplicated: true, speed: 200}); }});
 })();
