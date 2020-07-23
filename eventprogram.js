@@ -4,8 +4,8 @@
 // @version      0.2
 // @description  try to take over the world!
 // @author       You
-// @updateURL    https://github.com/TriXxieDK/Eventprogram/blob/master/eventprogram.js
-// @downloadURL  https://github.com/TriXxieDK/Eventprogram/blob/master/eventprogram.js
+// @updateURL    https://raw.githubusercontent.com/TriXxieDK/Eventprogram/master/eventprogram.js
+// @downloadURL  https://raw.githubusercontent.com/TriXxieDK/Eventprogram/master/eventprogram.js
 // @match        https://docs.google.com/spreadsheets/u/0/d/e/2PACX-1vS2zzGTsnJe06I6I7YLMlkasqFEvetVkMXJxs7lFgT2iwnT9YG0wxwKbUNsPK2orJe1DL4zspCL1XQR/pubhtml/sheet?headers=false&gid=340956028
 // @match        https://docs.google.com/spreadsheets/d/e/2PACX-1vQii6jcYTqQyVLSBZaiADpIxrQzULMxeTK-H_cZoT-XexcObPFBuFpL2QPOJWtAlNt5NJhJyOaPPJEt/pubhtml?headers=false&gid=340956028
 // @grant        none
