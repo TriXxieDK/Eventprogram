@@ -16,7 +16,7 @@ var $ = window.jQuery;
 (function() {
     'use strict';
     //Start af event (første dag)
-    var startdate = new Date('2020-11-13');
+    var startdate = new Date('2020-07-23');
 
     //Regex til at teste for tidspunkt
     var regex = new RegExp("[0-9][0-9]?\.[0-9][0-9]");
@@ -40,7 +40,7 @@ var $ = window.jQuery;
     var reloadfunc = function() {
         console.log('reloading');
         var now = new Date();
-        now = new Date(Date.parse('14 Nov 2020 13:45:00 GMT+1')); //Bruges til at simulere et tidspunkt for test
+        //now = new Date(Date.parse('14 Nov 2020 13:45:00 GMT+1')); //Bruges til at simulere et tidspunkt for test
 
         //Nuværende dag nummer i eventet og time / minut afrundet til halve timer
         currentDay = Math.round((now - startdate) / (1000 * 60 * 60 * 24));
@@ -107,13 +107,14 @@ var $ = window.jQuery;
 
             $('#sheets-viewport').animate({ scrollTop: scrollOffset }, 700);
 
-            var messages = [
+            var messages = "";
+            [
                 $('#sheets-viewport > div > div > table.waffle tbody tr:nth-child(101) td:nth-child(3) div').html(),
                 $('#sheets-viewport > div > div > table.waffle tbody tr:nth-child(102) td:nth-child(3) div').html(),
                 $('#sheets-viewport > div > div > table.waffle tbody tr:nth-child(103) td:nth-child(3) div').html(),
                 $('#sheets-viewport > div > div > table.waffle tbody tr:nth-child(104) td:nth-child(3) div').html(),
                 $('#sheets-viewport > div > div > table.waffle tbody tr:nth-child(105) td:nth-child(3) div').html(),
-            ].filter(Boolean).join('&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;')+'&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;';
+            ].filter(Boolean).forEach(function (currentValue, index) { messages = messages + "<div style=\"background-color: orange; padding: 10px; "+(index == 0 ? "" : "margin-top: 5px;")+"\">"+currentValue+"</div>"; });
 
             if (messages != lastMessages) {
                 $('#newsticker').html(messages);
@@ -127,17 +128,28 @@ var $ = window.jQuery;
     reloadfunc();
     $('<div>', {
         id: 'newsticker',
-        class: 'marquee',
     }).css({
         display: 'none',
         position: 'fixed',
         bottom: '0px',
-        height: '100px',
+        height: 'auto',
         width: '100%',
-        'background-color': 'orange',
+        'background-color': '#4e8ecb',
         color: 'white',
         'font-size': '80px',
+        'transform': 'none !important'
     }).appendTo('body');
 
-    $.ajax({type: "GET", url: "https://cdnjs.cloudflare.com/ajax/libs/jQuery.Marquee/1.5.0/jquery.marquee.min.js", dataType: "script", complete: function () { $('.marquee').marquee({duplicated: true, speed: 200}); }});
+    var ratio = (document.body.offsetWidth - 50) / $('table.waffle')[0].offsetWidth;
+    var style = document.createElement('style');
+    style.innerHTML =
+        'table.waffle, #headertable {' +
+        'transform: scale(' + ratio + ');' +
+        'transform-origin: top left;' +
+        '}';
+    // Get the first script tag
+    var ref = document.querySelector('script');
+    // Insert our new styles before the first script tag
+    ref.parentNode.insertBefore(style, ref);
+    document.body.style.overflow = 'hidden';
 })();
