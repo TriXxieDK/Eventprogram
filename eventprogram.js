@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Eventprogram
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.4
 // @description  try to take over the world!
 // @author       You
 // @updateURL    https://raw.githubusercontent.com/TriXxieDK/Eventprogram/master/eventprogram.js
@@ -43,7 +43,8 @@ var $ = window.jQuery;
         //now = new Date(Date.parse('14 Nov 2020 13:45:00 GMT+1')); //Bruges til at simulere et tidspunkt for test
 
         //Nuværende dag nummer i eventet og time / minut afrundet til halve timer
-        currentDay = Math.round((now - startdate) / (1000 * 60 * 60 * 24));
+        // Tilføjet 1 for at være 1-indekseret
+        currentDay = Math.round((now - startdate) / (1000 * 60 * 60 * 24)) + 1;
         currentHour = now.getHours();
         currentMinutes = now.getMinutes();
         if (currentMinutes < 30) currentMinutes = 0;
@@ -140,6 +141,7 @@ var $ = window.jQuery;
         'transform': 'none !important'
     }).appendTo('body');
 
+    // Removed the google banner at the bottom
     $('#footer').remove();
 
     var ratio = (document.body.offsetWidth - 50) / $('table.waffle')[0].offsetWidth;
