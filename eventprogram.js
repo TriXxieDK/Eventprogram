@@ -136,7 +136,7 @@ var $ = window.jQuery;
         width: '100%',
         'background-color': '#4e8ecb',
         color: 'white',
-        'font-size': '80px',
+        'font-size': '50px',
         'transform': 'none !important'
     }).appendTo('body');
 
