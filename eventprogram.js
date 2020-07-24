@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Eventprogram
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  try to take over the world!
 // @author       You
 // @updateURL    https://raw.githubusercontent.com/TriXxieDK/Eventprogram/master/eventprogram.js
@@ -139,6 +139,8 @@ var $ = window.jQuery;
         'font-size': '80px',
         'transform': 'none !important'
     }).appendTo('body');
+
+    $('#footer').remove();
 
     var ratio = (document.body.offsetWidth - 50) / $('table.waffle')[0].offsetWidth;
     var style = document.createElement('style');
