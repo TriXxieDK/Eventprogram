@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Eventprogram
 // @namespace    http://tampermonkey.net/
-// @version      0.4
+// @version      0.5
 // @description  try to take over the world!
 // @author       You
 // @updateURL    https://raw.githubusercontent.com/TriXxieDK/Eventprogram/master/eventprogram.js
@@ -16,7 +16,7 @@ var $ = window.jQuery;
 (function() {
     'use strict';
     //Start af event (første dag)
-    var startdate = new Date('2020-07-23');
+    var startdate = new Date('2020-07-24');
 
     //Regex til at teste for tidspunkt
     var regex = new RegExp("[0-9][0-9]?\.[0-9][0-9]");
@@ -43,8 +43,7 @@ var $ = window.jQuery;
         //now = new Date(Date.parse('14 Nov 2020 13:45:00 GMT+1')); //Bruges til at simulere et tidspunkt for test
 
         //Nuværende dag nummer i eventet og time / minut afrundet til halve timer
-        // Tilføjet 1 for at være 1-indekseret
-        currentDay = Math.round((now - startdate) / (1000 * 60 * 60 * 24)) + 1;
+        currentDay = Math.round((now - startdate) / (1000 * 60 * 60 * 24));
         currentHour = now.getHours();
         currentMinutes = now.getMinutes();
         if (currentMinutes < 30) currentMinutes = 0;
@@ -89,7 +88,7 @@ var $ = window.jQuery;
             //Scroll til det rigtige sted på siden, og lav stregen henover
             var elOffset = el.offset().top + $('#sheets-viewport').scrollTop();
             var elHeight = el.height();
-            elOffset = elOffset + Math.floor(percentpassed / 100 * elHeight);
+            elOffset = elOffset - elHeight + Math.floor(percentpassed / 100 * elHeight);
 
             $("<div>", {
             	id: 'overlay',
