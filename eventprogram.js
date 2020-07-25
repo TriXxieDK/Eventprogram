@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Eventprogram
 // @namespace    http://tampermonkey.net/
-// @version      0.6
+// @version      0.6.1
 // @description  try to take over the world!
 // @author       You
 // @updateURL    https://raw.githubusercontent.com/TriXxieDK/Eventprogram/master/eventprogram.js
@@ -40,15 +40,20 @@ var $ = window.jQuery;
     var reloadfunc = function() {
         console.log('reloading');
         var now = new Date();
-        //now = new Date(Date.parse('14 Nov 2020 13:45:00 GMT+1')); //Bruges til at simulere et tidspunkt for test
+        //now = new Date(Date.parse('25 Jul 2020 00:15:00 GMT+2')); //Bruges til at simulere et tidspunkt for test
+        //console.log(now-startdate);
 
-        //Nuværende dag nummer i eventet og time / minut afrundet til halve timer
-        currentDay = Math.round((now - startdate) / (1000 * 60 * 60 * 24));
+        // Nuværende dag nummer i eventet og time / minut afrundet til halve timer
+        // Lægger 1 til for at 1-indeksere. Og husker at runde ned for at altid have den nuværende dag.
+        currentDay = Math.floor((now - startdate) / (1000 * 60 * 60 * 24)) + 1;
+        var dayTime = (60*60*24*1000);
+        //console.log((now - startdate) / dayTime);
         currentHour = now.getHours();
         currentMinutes = now.getMinutes();
         if (currentMinutes < 30) currentMinutes = 0;
         if (currentMinutes >= 30) currentMinutes = 30;
         var percentpassed = ((now.getMinutes() - currentMinutes) / 30 * 100);
+        //console.log('Day: ' + currentDay + ', hour: ' + currentHour + ', min: ' + currentMinutes);
 
         //Genindlæs dokument indhold fra docs
         $('#sheets-viewport').load(document.URL + ' #sheets-viewport > div', function() {
@@ -76,6 +81,7 @@ var $ = window.jQuery;
                 var isthisatimestamp = regex.test(txt);
                 if (!wastimestamp && isthisatimestamp) curday++;
                 wastimestamp = isthisatimestamp;
+                //console.log('Curday: ' + curday)
 
                 if (isNow(txt.trim(), curday)) {
                     el = $(this);
